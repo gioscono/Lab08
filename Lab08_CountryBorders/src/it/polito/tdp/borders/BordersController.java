@@ -32,12 +32,38 @@ public class BordersController {
 	@FXML
 	void doCalcolaConfini(ActionEvent event) {
 
-		txtResult.setText("Todo!");
+		try {
+			int anno;
+			String s = (txtAnno.getText());
+			if(s.matches("[0-9]*")){
+				anno = Integer.parseInt(s);
+			}else{
+				txtResult.appendText("Valore inserito non valido.\n");
+				return;
+			}
+			if(anno<1816 || anno >2016){
+				txtResult.appendText("Anno inserito fuori dal range.\n");
+				return;
+			}
+			String ris = model.generaGrafo(anno);
+			txtResult.appendText(ris);
+
+		} catch (RuntimeException re) {
+			txtResult.setText(re.getMessage());
+		}
+		//txtResult.setText("Todo!");
 	}
 
+	
 	@FXML // This method is called by the FXMLLoader when initialization is complete
 	void initialize() {
 		assert txtAnno != null : "fx:id=\"txtAnno\" was not injected: check your FXML file 'Borders.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
+	}
+
+
+	public void setModel(Model model) {
+		this.model=model;
+		
 	}
 }
